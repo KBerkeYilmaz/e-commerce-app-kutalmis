@@ -21,7 +21,7 @@ class DVD extends Product
 
     public function save(): bool
     {
-        $this->db->query("INSERT INTO " . $this->getTable() . " (product_sku, product_name, product_price, product_type, height, width, length) VALUES (:product_sku, :product_name, :product_price, :product_type, :size)");
+        $this->db->query("INSERT INTO " . $this->getTable() . " (product_sku, product_name, product_price, product_type, size) VALUES (:product_sku, :product_name, :product_price, :product_type, :size)");
 
         // Bind the values from the parent class
         $this->db->bind(':product_sku', $this->getSku());

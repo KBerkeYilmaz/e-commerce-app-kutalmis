@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Helpers;
-
 use App\Helpers\Product;
 
 class Furniture extends Product
@@ -9,11 +8,6 @@ class Furniture extends Product
     private $height;
     private $width;
     private $length;
-
-    public function getTable(): string
-    {
-        return 'products_main';
-    }
 
 
     public function setHeight(int $height): void
@@ -45,6 +39,12 @@ class Furniture extends Product
     {
         return $this->length;
     }
+
+    public function getSize(): ?int
+    {
+        return null; 
+    }
+
 
     public function save(): bool
     {

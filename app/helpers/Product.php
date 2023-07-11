@@ -66,7 +66,7 @@ abstract class Product {
     {
         $this->type = $type;
     }
-
+    
 
     public function getAll()
     {
@@ -76,8 +76,8 @@ abstract class Product {
 
     public function delete($data)
     {
-        $this->db->query("DELETE FROM " . $this->getTable() . " WHERE product_sku = :product_sku");
-        $this->db->bind(':product_sku', $data['product_sku']);
+        $this->db->query("DELETE FROM " . $this->getTable() . " WHERE product_id = :product_id");
+        $this->db->bind(':product_id', $data['product_id']);
 
         return $this->db->resultSet();
     }
@@ -91,16 +91,6 @@ abstract class Product {
     }
 
 
-    public function save(): bool
-    {
-        $this->db->query("INSERT INTO " . $this->getTable() . "(product_sku, product_name, product_price, product_type, product_height, product_width, product_length) VALUES (:product_sku, :product_name, :product_price, :product_type, :product_height, :product_width, :product_length)");
-        $this->db->bind(':product_sku', $this->getSku());
-        $this->db->bind(':product_name', $this->getName());
-        $this->db->bind(':product_price', $this->getPrice());
-        $this->db->bind(':product_type', $this->getType());
-        
-
-        return $this->db->execute();
-    }
+    abstract public function save(): bool;
 }   
     
