@@ -1,4 +1,3 @@
-
 <?php
 /*
    * App Core Class
@@ -10,7 +9,7 @@ namespace App\Libraries;
 
 use App\Controllers\Pages;
 
-class Core
+class Router
 {
   protected $currentController = 'Products';
   protected $currentMethod = 'exhibit';

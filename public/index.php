@@ -7,8 +7,8 @@ header('Content-Type: application/json');
 header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"');  
   
     
-  use App\Libraries\Core;
+  use App\Libraries\Router;
   require_once '../app/bootstrap.php';
 
-  $init = new Core;
+  $init = new Router;
 

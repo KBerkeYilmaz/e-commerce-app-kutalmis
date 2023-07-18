@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Libraries\Controller;
-use App\Models\Product;
+use App\Helpers\ProductFactory;
 
 class Products extends Controller
 {
@@ -17,7 +18,8 @@ class Products extends Controller
 
   // GET REQUEST
 
-  public function exhibit() {
+  public function exhibit()
+  {
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
       // Handle preflight request
       header('Access-Control-Allow-Origin: *');
@@ -29,7 +31,7 @@ class Products extends Controller
       exit;
     } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       // Getting products
-      $products = $this->productModel->getProducts();
+      $products = $this->productModel->getAll();
 
       // Based on the result, send a success or error response
       if ($products) {
@@ -40,14 +42,13 @@ class Products extends Controller
         echo json_encode(['error' => 'Failed to retrieve products. Error code: 500']);
       }
     }
-}
+  }
 
 
   //// POST REQUEST 
 
   public function new()
   {
-
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
       // Handle preflight request
       header('Access-Control-Allow-Origin: *');
@@ -61,7 +62,6 @@ class Products extends Controller
       // Assuming you're sending a JSON-encoded POST request
       $data = json_decode(file_get_contents('php://input'), true);
 
-
       if (!$this->validateInput($data)) {
         // If the input is not valid, send an error response
         http_response_code(400);
@@ -72,11 +72,52 @@ class Products extends Controller
       // Sanitize the input
       $sanitizedData = $this->sanitizeInput($data);
 
-      // Instantiate your model and handler
-      $productModel = new Product();
+      $productType = $sanitizedData['product_type'];
 
-      // Use the handler to process the request
-      $result = $productModel->saveProduct($sanitizedData);
+      // Use the Controller's model method to instantiate the specific product type
+      // $productModel = ProductFactory::createProduct($productType);
+
+      $productType = ucfirst($sanitizedData['product_type']);
+
+      $productModel = $this->model($productType);
+
+      // Use the populate method to set the properties of the product
+      // $productModel->populate($sanitizedData);
+      // Set the properties of the product
+
+      // Check if the SKU exists
+      // $sku = $sanitizedData['product_sku'];
+      // if ($productModel->skuExists($sku)) {
+      //   http_response_code(400);
+      //   echo json_encode(['error' => 'SKU already exists']);
+      //   exit;
+      // } else {
+      //   $productModel->setSku($sku);
+      // }
+
+
+      ///Testtestest
+
+      $sku = $sanitizedData['product_sku'];
+      if ($productModel->skuExists($sku)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'SKU already exists']);
+        exit;
+      } else {
+        $productModel->populate($sanitizedData);
+      }
+
+
+
+      // $productModel->setName($sanitizedData['product_name']);
+      // $productModel->setPrice($sanitizedData['product_price']);
+      // $productModel->setSize($sanitizedData['dvd_size']);
+
+      // ... and so on for other properties ...
+
+      // Save the product
+      $result = $productModel->save();
+
 
       // Based on the result, send a success or error response
       if ($result) {
