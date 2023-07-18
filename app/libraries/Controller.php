@@ -15,8 +15,8 @@ class Controller
     if (file_exists('../app/models/' . $model . '.php')) {
       require_once '../app/models/' . $model . '.php';
       // Instatiate model
-      $modelWithNamespace = 'App\\Models\\' . $model;
-      return new $modelWithNamespace();
+      $newModel = 'App\\Models\\' . $model;
+      return new $newModel();
       } else {
       // Model does not exist
       die('Model does not exist');
