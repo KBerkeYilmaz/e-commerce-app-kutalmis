@@ -22,19 +22,4 @@ class Controller
       die('Model does not exist');
     }
   }
-
-  // Load view
-  public function view($view, $data = [])
-  {
-    // Check for view file
-    $filePath='../app/views/' . $view . '.php';
-    if (file_exists($filePath)) {
-      require_once '../app/views/' . $view . '.php';
-    } else {
-      echo 'Failed to load view: ' . $filePath; // Debug output
-
-      // View does not exist
-      die('View does not exist');
-    }
-  }  
 }

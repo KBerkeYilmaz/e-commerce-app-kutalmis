@@ -101,9 +101,6 @@ class Products extends Controller
 
       $productType = $sanitizedData['product_type'];
 
-      // Use the Controller's model method to instantiate the specific product type
-      // $productModel = ProductFactory::createProduct($productType);
-
       $productType = ucfirst($sanitizedData['product_type']);
 
       $productModel = $this->model($productType);
@@ -133,14 +130,6 @@ class Products extends Controller
       } else {
         $productModel->populate($sanitizedData);
       }
-
-
-
-      // $productModel->setName($sanitizedData['product_name']);
-      // $productModel->setPrice($sanitizedData['product_price']);
-      // $productModel->setSize($sanitizedData['dvd_size']);
-
-      // ... and so on for other properties ...
 
       // Save the product
       $result = $productModel->save();
