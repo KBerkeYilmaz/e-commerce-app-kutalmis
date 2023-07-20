@@ -19,7 +19,6 @@ class Furniture extends ProductAbstract
         'height',
         'width',
         'length',
-        // ... and so on for Furniture-specific properties ...
     ];
 
 

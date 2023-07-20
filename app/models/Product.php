@@ -23,10 +23,10 @@ class Product
         return $this->db->resultSet();
     }
 
-    public function delete($data)
+    public function delete($sku)
     {
-        $this->db->query("DELETE FROM " . $this->getTable() . " WHERE product_id = :product_id");
-        $this->db->bind(':product_id', $data['product_id']);
+        $this->db->query("DELETE FROM " . $this->getTable() . " WHERE product_sku = :product_sku");
+        $this->db->bind(':product_sku', $sku);
 
         return $this->db->execute();
     }

@@ -16,6 +16,33 @@ class Products extends Controller
     $this->productModel = $this->model('Product');
   }
 
+  private function validateInput($data)
+  {
+    // Simple validation: check that all required fields are present
+    $requiredFields = ['product_sku', 'product_name', 'product_price', 'product_type'];
+    foreach ($requiredFields as $field) {
+      if (!isset($data[$field]) || empty($data[$field])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private function sanitizeInput($data)
+  {
+    $sanitizedData = [];
+    foreach ($data as $key => $value) {
+      $sanitizedData[$key] = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+    }
+    return $sanitizedData;
+  }
+
+  public function error404()
+  {
+    // Display an error page
+    echo '404 error: Page not found.';
+  }
+
   // GET REQUEST
 
   public function exhibit()
@@ -130,30 +157,59 @@ class Products extends Controller
     }
   }
 
-  private function validateInput($data)
+  // DELETE REQUEST
+  public function delete($sku = '')
   {
-    // Simple validation: check that all required fields are present
-    $requiredFields = ['product_sku', 'product_name', 'product_price', 'product_type'];
-    foreach ($requiredFields as $field) {
-      if (!isset($data[$field]) || empty($data[$field])) {
-        return false;
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+      // Handle preflight request
+      header('Access-Control-Allow-Origin: *');
+      header('Access-Control-Allow-Methods: DELETE');
+      header('Access-Control-Allow-Headers: Content-Type');
+      header('Content-Type: text/plain, application/json');
+      header('Content-Length: 0');
+      http_response_code(200);
+      exit;
+    } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+      if (empty($sku)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid input']);
+        exit;
+      }
+
+      $result = $this->productModel->delete($sku);
+
+      if ($result) {
+        http_response_code(200);
+        echo json_encode(['success' => 'Product deleted successfully']);
+      } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Failed to delete product']);
       }
     }
-    return true;
   }
 
-  private function sanitizeInput($data)
+  public function deleteAll()
   {
-    $sanitizedData = [];
-    foreach ($data as $key => $value) {
-      $sanitizedData[$key] = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+      // Handle preflight request
+      header('Access-Control-Allow-Origin: *');
+      header('Access-Control-Allow-Methods: DELETE');
+      header('Access-Control-Allow-Headers: Content-Type');
+      header('Content-Type: text/plain, application/json');
+      header('Content-Length: 0');
+      http_response_code(200);
+      exit;
+    } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+
+      $result = $this->productModel->deleteAll();
+
+      if ($result) {
+        http_response_code(200);
+        echo json_encode(['success' => 'All products deleted successfully']);
+      } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Failed to delete products']);
+      }
     }
-    return $sanitizedData;
-  }
-
-  public function error404()
-  {
-    // Display an error page
-    echo '404 error: Page not found.';
   }
 }
