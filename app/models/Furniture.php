@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Helpers\ProductAbstract;
-use App\Models\Product;
 
 class Furniture extends ProductAbstract
 {   
@@ -26,11 +25,6 @@ class Furniture extends ProductAbstract
     {
         return $this->type;
     }
-
-    // public function setType(int $type): void
-    // {
-    //     $this->type = $type;
-    // }
     
     public function setHeight(int $height): void
     {

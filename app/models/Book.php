@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Helpers\ProductAbstract;
-use App\Models\Product;
 
 class Book extends ProductAbstract
-{   
+{
     protected $type = 'book';
     protected $weight;
 
@@ -15,18 +14,12 @@ class Book extends ProductAbstract
         'name',
         'price',
         'weight',
-        // ... and so on for DVD-specific properties ...
     ];
 
     public function getType(): string
     {
         return $this->type;
     }
-
-    // public function setType(int $type): void
-    // {
-    //     $this->type = $type;
-    // }
 
     public function getTable(): string
     {
@@ -36,7 +29,7 @@ class Book extends ProductAbstract
 
     public function setWeight(int $weight): void
     {
-        $this-> weight = $weight;
+        $this->weight = $weight;
     }
 
     public function getWeight(): int

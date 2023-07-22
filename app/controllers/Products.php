@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Libraries\Controller;
-use App\Helpers\ProductFactory;
 
 class Products extends Controller
 {
@@ -99,28 +98,11 @@ class Products extends Controller
       // Sanitize the input
       $sanitizedData = $this->sanitizeInput($data);
 
-      $productType = $sanitizedData['product_type'];
-
       $productType = ucfirst($sanitizedData['product_type']);
 
       $productModel = $this->model($productType);
 
-      // Use the populate method to set the properties of the product
-      // $productModel->populate($sanitizedData);
-      // Set the properties of the product
-
-      // Check if the SKU exists
-      // $sku = $sanitizedData['product_sku'];
-      // if ($productModel->skuExists($sku)) {
-      //   http_response_code(400);
-      //   echo json_encode(['error' => 'SKU already exists']);
-      //   exit;
-      // } else {
-      //   $productModel->setSku($sku);
-      // }
-
-
-      ///Testtestest
+      // Check if the SKU exists, if not use the populate method to set the properties of the product
 
       $sku = $sanitizedData['product_sku'];
       if ($productModel->skuExists($sku)) {
@@ -128,12 +110,12 @@ class Products extends Controller
         echo json_encode(['error' => 'SKU already exists']);
         exit;
       } else {
+
         $productModel->populate($sanitizedData);
       }
 
       // Save the product
       $result = $productModel->save();
-
 
       // Based on the result, send a success or error response
       if ($result) {

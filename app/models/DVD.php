@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use App\Helpers\ProductAbstract;
-use App\Models\Product;
 
-class DVD extends ProductAbstract
+class Dvd extends ProductAbstract
 {
     protected $type = 'dvd';
     protected $size;
@@ -15,7 +14,6 @@ class DVD extends ProductAbstract
         'name',
         'price',
         'size',
-        // ... and so on for DVD-specific properties ...
     ];
 
     public function getTable(): string
@@ -27,12 +25,6 @@ class DVD extends ProductAbstract
     {
         return $this->type;
     }
-
-    // public function setType(int $type): void
-    // {
-    //     $this->type = $type;
-    // }
-
 
     public function setSize(int $size): void
     {

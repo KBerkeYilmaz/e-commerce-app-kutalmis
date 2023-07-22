@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Libraries\Database;
 use App\Helpers\ProductInterface;
 
-class Product
+class Product implements ProductInterface
 {
     public function __construct()
     {
